@@ -106,7 +106,7 @@ class _ArticleWebViewScreenState extends State<ArticleWebViewScreen> {
         backgroundColor: colors.bottomNavBackground,
         child: Icon(
           isLiked ? Icons.favorite : Icons.favorite_border,
-          color: isLiked ? colors.likeColor : colors.unlikeColor,
+          color: isLiked ? colors.likeColor : colors.iconSecondary,
         ),
       ),
     );

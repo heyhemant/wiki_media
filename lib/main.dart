@@ -129,6 +129,8 @@ class _AppBootstrapState extends State<AppBootstrap> {
   int _importedCount = 0;
   int _totalImportItems = 0;
   
+  bool _hasLaunched = false;
+  
   double _setupProgress = 0.0;
   String _setupStatus = '';
   String _errorMessage = '';
@@ -203,6 +205,8 @@ class _AppBootstrapState extends State<AppBootstrap> {
       // URL pointing to the production dataset (35MB)
       const downloadUrl = 'https://github.com/heyhemant/wiki_media/releases/download/v1.0.0/smoldata.json.br';
 
+      _hasLaunched = false;
+
       await _dataService.setupDatabase(
         downloadUrl: downloadUrl,
         onDownloadProgress: (downloaded, total) {
@@ -218,7 +222,7 @@ class _AppBootstrapState extends State<AppBootstrap> {
           });
         },
         onSetupProgress: (progress, status) {
-          if (!mounted) return;
+          if (!mounted || _hasLaunched) return;
           setState(() {
             _setupProgress = progress;
             _setupStatus = status;
@@ -227,15 +231,19 @@ class _AppBootstrapState extends State<AppBootstrap> {
         onImportProgress: (imported, total) {
           if (!mounted) return;
           setState(() {
-            _state = AppState.importing;
             _importedCount = imported;
             _totalImportItems = total;
+            if (!_hasLaunched) {
+              _state = AppState.importing;
+            }
           });
         },
       );
 
-      // Once import completes, build cache and launch
       if (mounted) {
+        setState(() {
+          _hasLaunched = true;
+        });
         await _initializeCacheAndProceed();
       }
     } catch (e) {
