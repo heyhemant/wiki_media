@@ -200,8 +200,8 @@ class _AppBootstrapState extends State<AppBootstrap> {
     });
 
     try {
-      // URL pointing to the Xikipedia production dataset (35MB)
-      const downloadUrl = 'https://xikipedia.org/smoldata.json.br';
+      // URL pointing to the production dataset (35MB)
+      const downloadUrl = 'https://github.com/heyhemant/wiki_media/releases/download/v1.0.0/smoldata.json.br';
 
       await _dataService.setupDatabase(
         downloadUrl: downloadUrl,
